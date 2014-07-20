@@ -1,0 +1,32 @@
+﻿{{#posts}}
+    <div>
+        <h4>
+            {{from.name}}<br />
+            <a href="post.html?id={{id}}"><small>{{dateFormat created_time format="MMMM DD, YYYY HH:mm"}}</small></a>
+        </h4>
+    </div>
+    {{#if message}}
+        <p>{{message}}</p>
+    {{/if}}
+    {{#if caption}}
+    <div class="linkpreviewbox">
+        <blockquote>
+            {{#if caption}}
+            <p>
+                <small>{{caption}}</small>
+            </p>
+            {{/if}}
+            {{#if description}}<footer>{{description}}</footer>{{/if}}
+        </blockquote>
+    </div>
+    {{/if}}
+    
+    <div class="highlight">    
+        <div>
+            <span class="glyphicon glyphicon-thumbs-up"></span> {{total_likes}} people like this.    
+            <span class="glyphicon glyphicon-comment"></span> {{total_comments}} comments.    
+        </div>
+    </div>
+    
+    <br/>
+{{/posts}}

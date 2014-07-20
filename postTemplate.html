@@ -1,0 +1,45 @@
+﻿<div>
+    <h4>
+        {{from.name}}<br />
+        <a href="https://www.facebook.com/{{id}}"><small>{{dateFormat created_time format="MMMM DD, YYYY HH:mm"}}</small></a>
+    </h4>
+</div>
+<p>{{message}}</p>
+<div class="linkpreviewbox">
+    <img src='{{picture}}' width="30%" />
+    <blockquote>
+        <p>
+            <a href='{{link}}'>{{name}}</a>
+            {{#if caption}}<small>{{caption}}</small>{{/if}}
+        </p>
+        <footer>{{description}}</footer>
+    </blockquote>
+</div>
+
+{{#if likes.data}}
+<div class="highlight">    
+    <div>
+        <span class="glyphicon glyphicon-thumbs-up"></span>
+        <abbr title='{{#each likes.data}}{{name}}&#xa;{{/each}}'>{{likes.data.length}} people</abbr> like this.
+    </div>
+</div>
+{{/if}}
+
+<br/>
+
+{{#if comments.data}}
+<div class="highlight">
+    {{#each comments.data}}
+    <div>
+        <p><b><a href="https://www.facebook.com/{{from.id}}">{{from.name}}</a></b></p>
+        <p>{{message}}</p>
+        <div>
+            <small><a href="https://www.facebook.com/{{id}}">{{dateFormat created_time format="MMMM DD, YYYY HH:mm"}}</a></small>&nbsp;&nbsp;&nbsp;
+            <span class="glyphicon glyphicon-thumbs-up"></span>
+            {{like_count}}
+        </div>
+        <hr/>
+    </div>
+    {{/each}}
+</div>
+{{/if}}

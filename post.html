@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>EgyGeeks Archive</title>
+
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/png" />
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <!--<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">-->
+
+    <style type="text/css">
+        .linkpreviewbox {
+            border: 1px solid #E1E1E8;
+            padding: 14px;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+        }
+
+        .highlight {
+            padding: 9px 14px;
+            /*margin-bottom: 14px;*/
+            background-color: #F7F7F9;
+            border: 1px solid #E1E1E8;
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
+    </style>
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="lib/handlebars-v1.3.0.js"></script>
+    <script src="lib/moment.min.js"></script>
+
+    <script type="text/javascript">
+        var QueryString = function () {
+            // This function is anonymous, is executed immediately and
+            // the return value is assigned to QueryString!
+            var query_string = {};
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split("=");
+                // If first entry with this name
+                if (typeof query_string[pair[0]] === "undefined") {
+                    query_string[pair[0]] = pair[1];
+                    // If second entry with this name
+                } else if (typeof query_string[pair[0]] === "string") {
+                    var arr = [query_string[pair[0]], pair[1]];
+                    query_string[pair[0]] = arr;
+                    // If third or later entry with this name
+                } else {
+                    query_string[pair[0]].push(pair[1]);
+                }
+            }
+            return query_string;
+        }();
+
+        try {
+            var postId = QueryString.id;
+            console.log(postId);
+
+            Handlebars.registerHelper('dateFormat', function (context, block) {
+                if (window.moment) {
+                    var f = block.hash.format || "MMM Do, YYYY";
+                    return moment(Date(context)).format(f);
+                } else {
+                    return context;   //  moment plugin not available. return data as is.
+                };
+            });
+
+            $.get('data/post/' + postId + '.json', function (postData) {
+                $.get('postTemplate.html', function (postTemplate) {
+                    //console.log(postTemplate);
+                    var postCompiledTemplate = Handlebars.compile(postTemplate);
+                    var postHtml = postCompiledTemplate(postData);
+                    //console.log(postHtml);
+                    $('#postDiv').html(postHtml);
+                });
+            });
+        }
+        catch (error) {
+            console.log(error);
+        }
+    </script>
+
+</head>
+<body class="container">
+
+    <div>
+        <img class="pull-left" alt="EgyGeeks" src="img/EgyGeeksLogo.png" />
+        <h1 class="text-right">Egyptian Geeks Archive</h1>
+        <h4 class="text-right"><a href="https://www.facebook.com/groups/egyptian.geeks/">Visit us on Facebook</a></h4>
+    </div>
+    <br /><br /><br />
+    <div id="postDiv" />
+
+</body>
+</html>
