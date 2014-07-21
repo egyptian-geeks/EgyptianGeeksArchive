@@ -67,6 +67,9 @@
                     return context;   //  moment plugin not available. return data as is.
                 };
             });
+			Handlebars.registerHelper('avatar', function (context) {
+                 return "http://graph.facebook.com/"+context+"/picture";
+            });
 
             $.get('data/post/' + postId + '.json', function (postData) {
                 $.get('postTemplate.html', function (postTemplate) {
