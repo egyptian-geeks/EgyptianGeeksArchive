@@ -31,7 +31,7 @@
 <div class="highlight">
     {{#each comments.data}}
     <div>
-        <p><b><a href="https://www.facebook.com/{{from.id}}">{{from.name}}</a></b></p>
+        <p><b><img src="{{avatar from.id}}"/><a href="https://www.facebook.com/{{from.id}}">{{from.name}}</a></b></p>
         <p>{{message}}</p>
         <div>
             <small><a href="https://www.facebook.com/{{id}}">{{dateFormat created_time format="MMMM DD, YYYY HH:mm"}}</a></small>&nbsp;&nbsp;&nbsp;
