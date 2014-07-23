@@ -1,9 +1,12 @@
 ﻿{{#posts}}
-    <div>
-        <h4>
-         <img src="{{avatar from.id}}"/><a href="https://www.facebook.com/{{from.id}}">{{from.name}}</a><br />
+    <div class="postHeader">
+        <div class="pull-left">
+            <img class="userImage" alt="{{from.name}}" src="{{avatar from.id}}" />
+        </div>
+        <div>
+            <h4><a href="https://www.facebook.com/{{from.id}}">{{from.name}}</a></h4>
             <a href="post.html?id={{id}}"><small>{{dateFormat created_time format="MMMM DD, YYYY HH:mm"}}</small></a>
-        </h4>
+        </div>
     </div>
     {{#if message}}
         <p>{{message}}</p>
