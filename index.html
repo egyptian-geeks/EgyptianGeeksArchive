@@ -69,7 +69,7 @@
 			    })
 			});
 
-            $.get('data/summary/summary_page_' + summaryId + '.json', function (summaryData) {
+            $.getJSON('data/summary/summary_page_' + summaryId + '.json', function (summaryData) {
                 $.get('summaryTemplate.html', function (summaryTemplate) {
                     var summaryCompiledTemplate = Handlebars.compile(summaryTemplate);
                     var summaryHtml = summaryCompiledTemplate(summaryData);
