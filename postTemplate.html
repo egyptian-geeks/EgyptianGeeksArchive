@@ -9,15 +9,15 @@
         </div>
     </div>
 </div>
-<p>{{message}}</p>
+<p>{{{urlify message}}}</p>
 <div class="linkpreviewbox">
     <img src='{{picture}}' width="30%" />
     <blockquote>
         <p>
             <a href='{{link}}'>{{name}}</a>
-            {{#if caption}}<small>{{caption}}</small>{{/if}}
+            {{#if caption}}<small>{{{urlify caption}}}</small>{{/if}}
         </p>
-        <footer>{{description}}</footer>
+        {{#if description}}<footer>{{{urlify description}}}</footer>{{/if}}
     </blockquote>
 </div>
 
@@ -37,7 +37,7 @@
     {{#each comments.data}}
     <div>
         <p><b><img src="{{avatar from.id}}"/><a href="https://www.facebook.com/{{from.id}}">{{from.name}}</a></b></p>
-        <p>{{message}}</p>
+        {{#if message}}<p>{{{urlify message}}}</p>{{/if}}
         <div>
             <small><a href="https://www.facebook.com/{{id}}">{{dateFormat created_time format="MMMM DD, YYYY HH:mm"}}</a></small>&nbsp;&nbsp;&nbsp;
             <span class="glyphicon glyphicon-thumbs-up"></span>

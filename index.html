@@ -60,7 +60,14 @@
             });
 			Handlebars.registerHelper('avatar', function (context) {
                  return "http://graph.facebook.com/"+context+"/picture";
-            });
+			});
+
+			Handlebars.registerHelper('urlify', function (context) {
+			    var urlRegex = /(https?:\/\/[^\s]+)/g;
+			    return context.replace(urlRegex, function (url) {
+			        return '<a href="' + url + '">' + url + '</a>';
+			    })
+			});
 
             $.get('data/summary/summary_page_' + summaryId + '.json', function (summaryData) {
                 $.get('summaryTemplate.html', function (summaryTemplate) {

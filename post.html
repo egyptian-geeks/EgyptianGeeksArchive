@@ -53,6 +53,13 @@
                  return "http://graph.facebook.com/"+context+"/picture";
             });
 
+			Handlebars.registerHelper('urlify', function (context) {
+			    var urlRegex = /(https?:\/\/[^\s]+)/g;
+			    return context.replace(urlRegex, function (url) {
+			        return '<a href="' + url + '">' + url + '</a>';
+			    })
+			});
+
             $.get('data/post/' + postId + '.json', function (postData) {
                 $.get('postTemplate.html', function (postTemplate) {
                     //console.log(postTemplate);
