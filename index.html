@@ -30,6 +30,14 @@
     <script src="lib/moment.min.js"></script>
 
     <script type="text/javascript">
+	function getLastSummeryIndex()
+	{
+	var index=1;
+	$.ajax({url:"data/summaryindex.txt", async: false,success:function(result){
+		index=Number(result);
+	}});
+	return index;
+	}
         var QueryString = function () {
             // This function is anonymous, is executed immediately and
             // the return value is assigned to QueryString!
@@ -54,9 +62,9 @@
         }();
 
         try {
-            var summaryId = 1;
+            var summaryId = getLastSummeryIndex();
             if (QueryString != undefined && QueryString.page != undefined) {
-               summaryId = QueryString.page;
+               summaryId =getLastSummeryIndex()-Number(QueryString.page)+1;
             }
 
             Handlebars.registerHelper('dateFormat', function (context, block) {
@@ -78,11 +86,11 @@
                     $('#summaryDiv').html(summaryHtml);
                 });
 
-                if (summaryId != 1) {
-                    $('#navArrows').html("<a href='index.html?page=" + (parseInt(summaryId) - 1) + "'><span class='glyphicon glyphicon-chevron-left'></span></a>");
+                if (summaryId != getLastSummeryIndex()) {
+                    $('#navArrows').html("<a href='index.html?page=" + (getLastSummeryIndex()- parseInt(summaryId)) + "'><span class='glyphicon glyphicon-chevron-left'></span></a>");
                 }
-                $('#navArrows').append(" Page " + summaryId + " ");
-                $('#navArrows').append("<a href='index.html?page=" + (parseInt(summaryId) + 1) + "'><span class='glyphicon glyphicon-chevron-right'></span></a>");
+                $('#navArrows').append(" Page " + (getLastSummeryIndex()- parseInt(summaryId)+1) + " ");
+                $('#navArrows').append("<a href='index.html?page=" + (getLastSummeryIndex()- parseInt(summaryId) + 2) + "'><span class='glyphicon glyphicon-chevron-right'></span></a>");
 
             });
 
@@ -96,7 +104,7 @@
 <body class="container">
 
     <div>
-        <img class="pull-left" alt="EgyGeeks" src="img/EgyGeeksLogo.png" />
+        <a href="index.html"><img class="pull-left" alt="EgyGeeks" src="img/EgyGeeksLogo.png" /></a>
         <h1 class ="text-right">Egyptian Geeks Archive</h1>
         <h4 class ="text-right"><a href="https://www.facebook.com/groups/egyptian.geeks/">Visit us on Facebook</a></h4>
     </div>
