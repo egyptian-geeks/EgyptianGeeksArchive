@@ -1,81 +1,31 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>EgyGeeks Archive</title>
+    <title>Egyptian Geeks Archive</title>
 
     <link rel="shortcut icon" href="img/favicon.ico" type="image/png" />
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-
-    <style type="text/css">
-        .linkpreviewbox {
-            border: 1px solid #E1E1E8;
-            padding: 14px;
-            border-top-left-radius: 4px;
-            border-top-right-radius: 4px;
-        }
-
-        .highlight {
-            padding: 9px 14px;
-            /*margin-bottom: 14px;*/
-            background-color: #F7F7F9;
-            border: 1px solid #E1E1E8;
-            border-bottom-left-radius: 4px;
-            border-bottom-right-radius: 4px;
-        }
-    </style>
+    <link href="css/style.css" rel="stylesheet" />
 
     <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="lib/handlebars-v1.3.0.js"></script>
     <script src="lib/moment.min.js"></script>
 	<script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.2.19.min.js"></script>
-
+	<script type="text/javascript" src="lib/common.js"></script>
     <script type="text/javascript">
-	
-        var QueryString = function () {
-            // This function is anonymous, is executed immediately and
-            // the return value is assigned to QueryString!
-            var query_string = {};
-            var query = window.location.search.substring(1);
-            var vars = query.split("&");
-            for (var i = 0; i < vars.length; i++) {
-                var pair = vars[i].split("=");
-                // If first entry with this name
-                if (typeof query_string[pair[0]] === "undefined") {
-                    query_string[pair[0]] = pair[1];
-                    // If second entry with this name
-                } else if (typeof query_string[pair[0]] === "string") {
-                    var arr = [query_string[pair[0]], pair[1]];
-                    query_string[pair[0]] = arr;
-                    // If third or later entry with this name
-                } else {
-                    query_string[pair[0]].push(pair[1]);
-                }
-            }
-            return query_string;
-        }();
+		
+        
 		var includeComm=false;
         try {
             var q = [];
             if (QueryString != undefined && QueryString.q != undefined) {
-               q =QueryString.q.split('%20');
+               q =QueryString.q.split(' ');
 			   if(QueryString.com != undefined)
 			   {
 			   includeComm=true;
 			   }
             }
-
-            Handlebars.registerHelper('dateFormat', function (context, block) {
-                if (window.moment) {
-                    var f = block.hash.format || "MMM Do, YYYY";
-                    return moment(context).format(f);
-                } else {
-                    return context;   //  moment plugin not available. return data as is.
-                };
-            });
-			Handlebars.registerHelper('avatar', function (context) {
-                 return "http://graph.facebook.com/"+context+"/picture";
-            });
 			
 			Parse.initialize("eyCdVi2Jf65mFDCFYt0D7Swuzmek4ciWl1tz9fxs", "SWLaqfJLCui6BKToomZL10ioZrIG6AS3dRAOOkMP");
 			var EgyGeeks = Parse.Object.extend("EgyGeeks");
@@ -111,7 +61,7 @@
 						
 					}
 					var res={posts:data}
-					$.get('summaryTemplate.html', function (summaryTemplate) {
+					$.get('searchTemplate.html', function (summaryTemplate) {
                     var summaryCompiledTemplate = Handlebars.compile(summaryTemplate);
                     var summaryHtml = summaryCompiledTemplate(res);
                     $('#summaryDiv').html(summaryHtml);
@@ -122,16 +72,6 @@
 			}
 			});
 			
-			
-
-			
-           
-                
-
-               
-
-         
-
         }
         catch (error) {
             console.log(error);
@@ -142,11 +82,17 @@
 <body class="container">
 
     <div>
-        <a href="index.html"><img class="pull-left" alt="EgyGeeks" src="img/EgyGeeksLogo.png" /></a>
+        <a href="index.html"><img class="pull-left" alt="EgyGeeks" src="img/EgyptianGeeksLogo.png" /></a>
         <h1 class ="text-right">Egyptian Geeks Archive</h1>
         <h4 class ="text-right"><a href="https://www.facebook.com/groups/egyptian.geeks/">Visit us on Facebook</a></h4>
     </div>
-    <br /><br /><br />
+    <br />
+	<div class="pull-right">
+	<input id="searchText" type="text"/>
+	<input id="searchSubmit" value="Search" type="submit" onclick="search()"/><br/>
+	<input id="commentsCheck" type="checkbox" value="commentsCheck">Include comments in search
+	</div>
+	<br /><br />
     
     <div id="summaryDiv"></div>
 

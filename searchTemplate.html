@@ -1,0 +1,29 @@
+{{#posts}}
+    <div class="postHeader">
+        <div class="pull-left">
+            <img class="userImage" alt="{{from.name}}" src="{{avatar from.id}}" />
+        </div>
+        <div>
+            <h4><a href="https://www.facebook.com/{{from.id}}">{{from.name}}</a></h4>
+            <a href="post.html?id={{id}}"><small>{{dateFormat created_time format="MMMM DD, YYYY HH:mm"}}</small></a>
+        </div>
+    </div>
+    {{#if message}}
+        <p>{{{urlify message}}}</p>
+    {{/if}}
+    {{#if caption}}
+    <div class="linkpreviewbox">
+        <blockquote>
+            {{#if caption}}
+            <p>
+                <small>{{caption}}</small>
+            </p>
+            {{/if}}
+            {{#if description}}<footer>{{description}}</footer>{{/if}}
+        </blockquote>
+    </div>
+    {{/if}}
+    
+    <hr/>
+    
+{{/posts}}
