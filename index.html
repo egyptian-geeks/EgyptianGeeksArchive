@@ -11,8 +11,9 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="lib/handlebars-v1.3.0.js"></script>
     <script src="lib/moment.min.js"></script>
-
+	<script type="text/javascript" src="lib/common.js"></script>
     <script type="text/javascript">
+	
 	function getLastSummeryIndex()
 	{
 	var index=1;
@@ -21,28 +22,6 @@
 	}});
 	return index;
 	}
-        var QueryString = function () {
-            // This function is anonymous, is executed immediately and
-            // the return value is assigned to QueryString!
-            var query_string = {};
-            var query = window.location.search.substring(1);
-            var vars = query.split("&");
-            for (var i = 0; i < vars.length; i++) {
-                var pair = vars[i].split("=");
-                // If first entry with this name
-                if (typeof query_string[pair[0]] === "undefined") {
-                    query_string[pair[0]] = pair[1];
-                    // If second entry with this name
-                } else if (typeof query_string[pair[0]] === "string") {
-                    var arr = [query_string[pair[0]], pair[1]];
-                    query_string[pair[0]] = arr;
-                    // If third or later entry with this name
-                } else {
-                    query_string[pair[0]].push(pair[1]);
-                }
-            }
-            return query_string;
-        }();
 
         try {
             var summaryId = getLastSummeryIndex();
@@ -50,24 +29,7 @@
                summaryId =getLastSummeryIndex()-Number(QueryString.page)+1;
             }
 
-            Handlebars.registerHelper('dateFormat', function (context, block) {
-                if (window.moment) {
-                    var f = block.hash.format || "MMM Do, YYYY";
-                    return moment(context).format(f);
-                } else {
-                    return context;   //  moment plugin not available. return data as is.
-                };
-            });
-			Handlebars.registerHelper('avatar', function (context) {
-                 return "http://graph.facebook.com/"+context+"/picture";
-			});
-
-			Handlebars.registerHelper('urlify', function (context) {
-			    var urlRegex = /(https?:\/\/[^\s]+)/g;
-			    return context.replace(urlRegex, function (url) {
-			        return '<a href="' + url + '">' + url + '</a>';
-			    })
-			});
+            
 
             $.getJSON('data/summary/summary_page_' + summaryId + '.json', function (summaryData) {
                 $.get('summaryTemplate.html', function (summaryTemplate) {
@@ -98,7 +60,13 @@
         <h1 class ="text-right">Egyptian Geeks Archive</h1>
         <h4 class ="text-right"><a href="https://www.facebook.com/groups/egyptian.geeks/">Visit us on Facebook</a></h4>
     </div>
-    <br /><br /><br />
+    <br />
+	<div class="pull-right">
+	<input id="searchText" type="text"/>
+	<input id="searchSubmit" value="Search" type="submit" onclick="search()"/><br/>
+	<input id="commentsCheck" type="checkbox" value="commentsCheck">Include comments in search
+	</div>
+	<br /><br />
     
     <div id="summaryDiv"></div>
 

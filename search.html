@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Egyptian Geeks Archive</title>
+
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/png" />
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link href="css/style.css" rel="stylesheet" />
+
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="lib/handlebars-v1.3.0.js"></script>
+    <script src="lib/moment.min.js"></script>
+	<script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.2.19.min.js"></script>
+	<script type="text/javascript" src="lib/common.js"></script>
+    <script type="text/javascript">
+		
+        
+		var includeComm=false;
+        try {
+            var q = [];
+            if (QueryString != undefined && QueryString.q != undefined) {
+               q =QueryString.q.split(' ');
+			   if(QueryString.com != undefined)
+			   {
+			   includeComm=true;
+			   }
+            }
+			
+			Parse.initialize("eyCdVi2Jf65mFDCFYt0D7Swuzmek4ciWl1tz9fxs", "SWLaqfJLCui6BKToomZL10ioZrIG6AS3dRAOOkMP");
+			var EgyGeeks = Parse.Object.extend("EgyGeeks");
+			var egygeeks = new EgyGeeks();
+			var postQuery = new Parse.Query(EgyGeeks);
+			postQuery.containsAll("Data", q).select("PostId");
+			var commQuery=new Parse.Query(EgyGeeks);
+			commQuery.containsAll("Comments", q).select("PostId");
+			if(includeComm)
+			{
+			var query = Parse.Query.or(postQuery,commQuery);
+			}
+			else
+			{
+			var query =postQuery;
+			}
+			query.limit=1000;
+			query.find({
+			success: function(object) {
+					
+					var data=[];
+					for (index = 0; index < object.length; ++index) {
+						$.ajax({
+						dataType: "json",
+						url: 'data/post/' + object[index].get("PostId") + '.json',
+						data: data,
+						async:false,
+						success: function(obj)
+						{
+						data.push(obj);
+						}
+						});
+						
+					}
+					var res={posts:data}
+					$.get('searchTemplate.html', function (summaryTemplate) {
+                    var summaryCompiledTemplate = Handlebars.compile(summaryTemplate);
+                    var summaryHtml = summaryCompiledTemplate(res);
+                    $('#summaryDiv').html(summaryHtml);
+                });
+			},
+			error: function(error) {
+					alert("Error: " + error.code + " " + error.message);
+			}
+			});
+			
+        }
+        catch (error) {
+            console.log(error);
+        }
+    </script>
+
+</head>
+<body class="container">
+
+    <div>
+        <a href="index.html"><img class="pull-left" alt="EgyGeeks" src="img/EgyptianGeeksLogo.png" /></a>
+        <h1 class ="text-right">Egyptian Geeks Archive</h1>
+        <h4 class ="text-right"><a href="https://www.facebook.com/groups/egyptian.geeks/">Visit us on Facebook</a></h4>
+    </div>
+    <br />
+	<div class="pull-right">
+	<input id="searchText" type="text"/>
+	<input id="searchSubmit" value="Search" type="submit" onclick="search()"/><br/>
+	<input id="commentsCheck" type="checkbox" value="commentsCheck">Include comments in search
+	</div>
+	<br /><br />
+    
+    <div id="summaryDiv"></div>
+
+    <div id="navArrows" class="text-center">
+    </div>
+
+    <br />
+
+</body>
+</html>
