@@ -21,3 +21,7 @@
 .userImage {
     margin-right: 10px;
 }
+.rtl {
+    direction:rtl;
+    text-align:left;
+}
